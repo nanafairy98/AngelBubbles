@@ -7,7 +7,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   // Create object
 
- for(var i=0; i < 50; i++){ //loop 5 times
+ for(var i=0; i < 30; i++){ //loop 5 times
     //put an object in the array for each loop
     // var d=random(100,200);
     // pulse[i] = new Pulser(width/2, height/2, d,d); 
@@ -20,14 +20,23 @@ function setup() {
 
 function draw() {
   //background(50, 89, 100);
-  background(50);
-  
+  // background(50);
+  background(0);
+
+  // push();
+  // translate(0,0,-600);
+  // // fill(0, 120);
+  // rect(0, 0, 5000, 5000);
+  // pop();
+
+
   let camX = map(mouseX, 0, width, -600, 600);
-  // let camY = map(mouseY, 0, height, -600, 600);
-  let camY=0;
+  let camY = map(mouseY, 0, height, -600, 600);
+  // let camZ = map(mouseX, )
+  // let camY=0;
 
   camera(camX, camY, (height/2)/ tan(PI / 6), 0, 0, 0, 0, 1, 0)
-  for(var i=0; i < 50; i++){
+  for(var i=0; i < 30; i++){
   spirits[i].move();
   spirits[i].display();
   spirits[i].rotation();
@@ -39,16 +48,20 @@ class ghost {
 	constructor() {
     this.x = random(width);
     this.y = random(height);
-    this.z = random(-500,500);
+    this.z = random(0-width,700);
     this.diameter = random(10, 100);
     this.speed = 1;
     this.dim = width*.5;
-    this.rX= width*.5;
+    this.rX;
+    this.rY;
+    this.h = random(0, 360);
+    // this.c = random(  )
   }
 
   move() {
     this.x += random(-this.speed, this.speed);
     this.y += random(-this.speed, this.speed);
+    this.z += random(-this.speed, this.speed);
     // push();
       // 
       // 
@@ -59,7 +72,8 @@ class ghost {
 
 // push();
     // translate(this.x, this.y, this.z);
-    this.rX = map(mouseX, 0, width, -.9, .9);
+    this.rX = map(mouseX, 0, width, -.6, .6);
+    this.rY = map(mouseY, 0, height, .6, -.6);
     
     // pop();
 
@@ -73,8 +87,7 @@ class ghost {
     ellipseMode( CENTER );
     
 	// noFill();
-	// noStroke();
-
+	// noStroke()36
 	// blendMode( BLEND ); //Not working?
  
   push();
@@ -82,6 +95,7 @@ class ghost {
       // translate(0-width*.5,0-height*.5, this.z);
       translate(this.x-width*.5,this.y-height*.5, this.z);
       rotateY(this.rX);
+      rotateX(this.rY);
       // rotateY(this.rX);
       // translate(this.x,this.y, this.z);
   		
@@ -91,10 +105,11 @@ class ghost {
 			let ls = random(-10, 10);
 			var c = int( map( i, 1, this.diameter, 0, 360 ) );
 			let b = c+= random(0,10);
-			let h = random(0,100);
-			stroke( c+ls, c*f, c*h );
-			h++;
-			
+			// let h = random(0,100);
+			// stroke( c+ls, c*f, c*h );
+      stroke(c-this.h+ls, c+this.h*f, c+this.h*ls)
+			// this.h++;
+		
 			noFill();
 			//fill(h,90,90);
 			// h = (h + 1) % 360;
